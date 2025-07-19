@@ -5,7 +5,17 @@ const cors = require("cors")
 const app = express();
 
 app.use(express.json())
-app.use(cors())
+const corsOptions = {
+    origin: [
+    //   "http://localhost:3000",         // Dev frontend
+      "https://narivastaram.com/", // Your backend upload server
+    ],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true,
+  };
+  
+  app.use(cors(corsOptions));
+  
 
 app.get("/",(req,res)=>{
     return res.status(200).send({message: "Welcome to Ecommerce API - Node",status:true})
