@@ -19,7 +19,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // 💌 Handle preflight (OPTIONS) requests
-app.options("*", cors(corsOptions));
+app.options("/*", cors(corsOptions));
 
 // 🌷 Welcome route
 app.get("/", (req, res) => {
