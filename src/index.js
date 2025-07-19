@@ -8,7 +8,7 @@ app.use(express.json())
 const corsOptions = {
     origin: [
     //   "http://localhost:3000",         // Dev frontend
-      "https://narivastaram.com/", // Your backend upload server
+      "https://narivastaram.com", // Your backend upload server
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
