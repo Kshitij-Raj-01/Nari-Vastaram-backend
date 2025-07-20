@@ -10,7 +10,10 @@ app.use(express.json());
 const corsOptions = {
   origin: [
     "https://narivastaram.com",
-    "https://www.narivastaram.com"
+    "http://narivastaram.com",
+    "https://www.narivastaram.com",
+    "http://www.narivastaram.com",
+    "http://69.62.82.138",
   ],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   credentials: true,
