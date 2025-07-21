@@ -25,7 +25,7 @@ const createPaymentLink = async (orderId) => {
         email: true
       },
       reminder_enable: true,
-      callback_url: `http://narivastaram.com//payment/${orderId}`,
+      callback_url: `http://narivastaram.com/payment/${orderId}`,
       callback_method: 'get'
     };
 
