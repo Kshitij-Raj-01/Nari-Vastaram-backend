@@ -156,12 +156,16 @@ async function returnOrder(orderId, reason = 'Not specified') {
 
 async function findOrderById(orderId) {
   const order = await Order.findById(orderId)
-    .populate("user")
-    .populate({ path: "orderItems", populate: { path: "product" } })
-    .populate({
-      path: "shippingAddress",
-      select: "-user"
-    });
+  .populate({
+    path: "user",
+    select: "firstName lastName email mobile"
+  })
+  .populate({ path: "orderItems", populate: { path: "product" } })
+  .populate({
+    path: "shippingAddress",
+    select: "-user"
+  });
+
   
   if (!order) {
     throw new Error("Order not found");
