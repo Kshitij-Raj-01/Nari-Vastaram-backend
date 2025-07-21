@@ -156,24 +156,29 @@ async function returnOrder(orderId, reason = 'Not specified') {
 
 async function findOrderById(orderId) {
   const order = await Order.findById(orderId)
-  .populate({
-    path: "user",
-    select: "firstName lastName email mobile"
-  })
-  .populate({ path: "orderItems", populate: { path: "product" } })
-  .populate({
-    path: "shippingAddress",
-    select: "-user"
-  });
+    .populate({
+      path: "user",
+      select: "firstName lastName email mobile" // 💌 only the fields we want in the invoice
+    })
+    .populate({
+      path: "orderItems",
+      populate: {
+        path: "product"
+      }
+    })
+    .populate({
+      path: "shippingAddress",
+      select: "-user -__v" // optional: skip user ref and mongoose version key
+    });
 
-  
   if (!order) {
     throw new Error("Order not found");
   }
-  
-  console.log("backend order: ", order);
+
+  console.log("Populated order: ", order);
   return order;
 }
+
 
 async function usersOrderHistory(userId) {
   try {
