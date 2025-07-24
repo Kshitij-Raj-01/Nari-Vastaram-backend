@@ -136,5 +136,6 @@ async function mergeGuestCartItems(userId, items){
 module.exports = {
   createCart,
   findUserCart,
-  addCartItem
+  addCartItem,
+  mergeGuestCartItems
 };
