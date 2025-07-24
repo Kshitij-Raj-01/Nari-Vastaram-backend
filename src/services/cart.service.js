@@ -107,6 +107,32 @@ async function addCartItem(userId, req) {
     }
 }  
 
+async function mergeGuestCartItems(userId, items){
+  let cart = await Cart.findOne({ user: userId });
+  if (!cart) {
+    cart = new Cart({ user: userId, cartItems: [] });
+  }
+
+  for (const item of items) {
+    const index = cart.cartItems.findIndex(
+      (i) => i.product.toString() === item.productId && i.size === item.size
+    );
+
+    if (index >= 0) {
+      cart.cartItems[index].quantity += item.quantity;
+    } else {
+      cart.cartItems.push({
+        product: item.productId,
+        size: item.size,
+        quantity: item.quantity,
+      });
+    }
+  }
+
+  await cart.save();
+  return cart;
+};
+
 module.exports = {
   createCart,
   findUserCart,
