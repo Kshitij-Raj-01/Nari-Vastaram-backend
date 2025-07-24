@@ -20,7 +20,21 @@ const addItemToCart = async (req, res) => {
     }
 }
 
+const mergeGuestCart = async (req, res) => {
+  const userId = req.user._id;
+  const items = req.body.items;
+
+  try {
+    await cartService.mergeGuestCartItems(userId, items);
+    return res.status(200).json({ message: "Guest cart merged." });
+  } catch (err) {
+    console.error("Merge cart error:", err);
+    return res.status(500).json({ message: "Failed to merge cart." });
+  }
+};
+
 module.exports = {
     findUserCart,
-    addItemToCart
+    addItemToCart,
+    mergeGuestCart
 }
