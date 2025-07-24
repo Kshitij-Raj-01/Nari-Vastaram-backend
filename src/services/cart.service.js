@@ -107,31 +107,56 @@ async function addCartItem(userId, req) {
     }
 }  
 
-async function mergeGuestCartItems(userId, items){
+async function mergeGuestCartItems(userId, items) {
   let cart = await Cart.findOne({ user: userId });
+
   if (!cart) {
-    cart = new Cart({ user: userId, cartItems: [] });
+    cart = new Cart({ user: userId });
+    await cart.save();
   }
 
   for (const item of items) {
-    const index = cart.cartItems.findIndex(
-      (i) => i.product.toString() === item.productId && i.size === item.size
-    );
+    const product = await Product.findById(item.productId);
+    if (!product) continue;
 
-    if (index >= 0) {
-      cart.cartItems[index].quantity += item.quantity;
+    const sizeData = product.sizes.find((s) => s.name === item.size);
+    if (!sizeData || sizeData.quantity <= 0) continue;
+
+    let existingItem = await CartItem.findOne({
+      cart: cart._id,
+      userId,
+      product: item.productId,
+      size: item.size,
+    });
+
+    if (existingItem) {
+      // Ensure we don't exceed stock
+      const newQty = Math.min(
+        existingItem.quantity + item.quantity,
+        sizeData.quantity
+      );
+      existingItem.quantity = newQty;
+      await existingItem.save();
     } else {
-      cart.cartItems.push({
+      const newCartItem = new CartItem({
+        cart: cart._id,
+        userId,
         product: item.productId,
         size: item.size,
-        quantity: item.quantity,
+        quantity: Math.min(item.quantity, sizeData.quantity),
+        price: product.price,
+        discountedPrice: product.discountedPrice,
       });
+      await newCartItem.save();
+
+      cart.cartItems.push(newCartItem._id); // 🔥 Important!
     }
   }
 
   await cart.save();
   return cart;
-};
+}
+
 
 module.exports = {
   createCart,
