@@ -103,12 +103,7 @@ const codPayment = async (orderId) => {
     throw new Error("Invalid order: One or more items have quantity 0 💔");
   }
 
-  const allowedCities = ["Patna", "Bihar Sharif"];
-  const userCity = order.shippingAddress?.city?.toLowerCase();
-
-  if (!allowedCities.map(c => c.toLowerCase()).includes(userCity)) {
-    throw new Error("COD is not available in your city 💔");
-  }
+  const userCity = order.shippingAddress?.city?.toLowerCase()
 
   await orderService.updateOrderById(orderId, {
     paymentDetails: {
