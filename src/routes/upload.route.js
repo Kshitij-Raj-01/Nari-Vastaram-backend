@@ -61,7 +61,7 @@ router.post("/", upload.single("image"), async (req, res) => {
     const imageName = `${nanoid()}-${date.getTime()}.jpeg`;
 
     const command = new PutObjectCommand({
-      Bucket: nari-vastaram, // Your bucket name from .env
+      Bucket: "nari-vastaram", // Your bucket name from .env
       Key: imageName,
       Body: fileBuffer,
       ContentType: req.file.mimetype,
