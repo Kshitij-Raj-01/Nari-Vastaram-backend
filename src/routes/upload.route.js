@@ -42,7 +42,7 @@ const { nanoid } = require("nanoid"); // You'll need to install this: npm instal
 
 // AWS S3 configuration
 const s3 = new S3Client({
-  region: process.env.AWS_REGION, // e.g., 'ap-south-1'
+  region: 'ap-south-1',
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -61,7 +61,7 @@ router.post("/", upload.single("image"), async (req, res) => {
     const imageName = `${nanoid()}-${date.getTime()}.jpeg`;
 
     const command = new PutObjectCommand({
-      Bucket: process.env.S3_BUCKET_NAME, // Your bucket name from .env
+      Bucket: nari-vastaram, // Your bucket name from .env
       Key: imageName,
       Body: fileBuffer,
       ContentType: req.file.mimetype,
@@ -72,7 +72,7 @@ router.post("/", upload.single("image"), async (req, res) => {
     await s3.send(command);
 
     // Get the public URL of the uploaded file
-    const imageUrl = `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${imageName}`;
+    const imageUrl = `https://nari-vastaram .s3.ap-south-1.amazonaws.com/${imageName}`;
 
     console.log("Image URL:", imageUrl);
     console.log("File Key:", imageName);
