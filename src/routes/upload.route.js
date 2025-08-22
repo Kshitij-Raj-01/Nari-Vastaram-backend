@@ -65,7 +65,6 @@ router.post("/", upload.single("image"), async (req, res) => {
       Key: imageName,
       Body: fileBuffer,
       ContentType: req.file.mimetype,
-      ACL: "public-read", // This is important for public access to the file
     });
 
     // Upload the file to S3
