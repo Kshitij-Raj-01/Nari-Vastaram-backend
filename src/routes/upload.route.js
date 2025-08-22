@@ -72,7 +72,7 @@ router.post("/", upload.single("image"), async (req, res) => {
     await s3.send(command);
 
     // Get the public URL of the uploaded file
-    const imageUrl = `https://nari-vastaram .s3.ap-south-1.amazonaws.com/${imageName}`;
+    const imageUrl = `https://nari-vastaram.s3.ap-south-1.amazonaws.com/${imageName}`;
 
     console.log("Image URL:", imageUrl);
     console.log("File Key:", imageName);
